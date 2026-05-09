@@ -1,26 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
-  /* Brand Colors */
-  --brand-green: #1db954;
-  --brand-green-light: #1ed760;
-  --brand-green-dark: #17a44a;
-  --brand-gradient: linear-gradient(135deg, #1db954, #1ed760);
+  /* Brand Colors - Nature Breathable Theme */
+  --brand-primary: #10b981; /* Soft Mint Green */
+  --brand-secondary: #0ea5e9; /* Light Ocean Blue */
+  --brand-tertiary: #8b5cf6; /* Soft Purple */
+  --brand-gradient: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+  --brand-gradient-hover: linear-gradient(135deg, var(--brand-secondary), var(--brand-primary));
+  --brand-green: var(--brand-primary); /* For backward compatibility */
 
-  /* Dark Theme */
-  --bg-primary: #0a0e17;
-  --bg-secondary: #111827;
-  --bg-card: #1a1f2e;
-  --bg-card-hover: #232940;
-  --bg-elevated: #1e2538;
-  --bg-glass: rgba(26, 31, 46, 0.7);
-  --bg-glass-light: rgba(255, 255, 255, 0.05);
+  /* Dark Theme (Breathable Nature Dark) */
+  --bg-primary: #081116; /* Deep ocean/forest night */
+  --bg-secondary: #0f1c23;
+  --bg-card: rgba(15, 28, 35, 0.6);
+  --bg-card-hover: rgba(22, 40, 50, 0.8);
+  --bg-elevated: #162832;
+  --bg-glass: rgba(8, 17, 22, 0.65);
+  --bg-glass-light: rgba(255, 255, 255, 0.08);
 
   /* Text */
-  --text-primary: #f1f5f9;
+  --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
-  --text-accent: #1db954;
+  --text-accent: var(--brand-primary);
 
   /* Borders */
   --border-color: rgba(255, 255, 255, 0.08);
@@ -137,13 +139,40 @@ ul, ol { list-style: none; }
 .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
 
-/* Glassmorphism Card */
+/* Glassmorphism Card (Apple-like UI) */
 .glass-card {
   background: var(--bg-glass);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+}
+
+.glass-button {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border-radius: var(--radius-full);
+  transition: all var(--transition-normal);
+}
+.glass-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.glass-notification {
+  background: rgba(16, 185, 129, 0.15);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: var(--text-primary);
   border-radius: var(--radius-lg);
+  padding: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 /* Gradient Text */

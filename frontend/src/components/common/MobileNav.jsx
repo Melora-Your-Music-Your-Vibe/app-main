@@ -21,7 +21,7 @@ export default function MobileNav() {
         <Heart size={22} />
         <span>Liked</span>
       </NavLink>
-      <NavLink to="/settings" className={({ isActive }) => `mobile-nav-item ${isActive ? 'active' : ''}`}>
+      <NavLink to="/profile" className={({ isActive }) => `mobile-nav-item ${isActive ? 'active' : ''}`}>
         <User size={22} />
         <span>Profile</span>
       </NavLink>

@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Home, Search, Library, Heart, PlusCircle, Music, LogOut, Settings, LayoutDashboard } from 'lucide-react';
+import { Home, Search, Library, Heart, PlusCircle, Music, LogOut, Settings, LayoutDashboard, User, Gift } from 'lucide-react';
 import useAuthStore from '../../store/authStore';
 import './Sidebar.css';
 
@@ -41,6 +41,17 @@ export default function Sidebar() {
           </NavLink>
           <NavLink to="/playlists" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
             <PlusCircle size={20} /> <span>Playlists</span>
+          </NavLink>
+        </div>
+
+        <div className="nav-divider" />
+
+        <div className="nav-section">
+          <NavLink to="/profile" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+            <User size={20} /> <span>Profile</span>
+          </NavLink>
+          <NavLink to="/rewards" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+            <Gift size={20} /> <span>Rewards (VICK'S)</span>
           </NavLink>
         </div>
 
