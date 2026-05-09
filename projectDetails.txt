@@ -1998,4 +1998,4 @@ Authentication Details:
 1. Cloudinary: (utkarshraj98723@gmail.com)
 2. Supabase-pgSQL: (jaycob4498@gmail.com)
 3. Google Cloud Console: (jaycob4498@gmail.com)
-4. Google Email: (utkarshraj98723@gmail.com)
+4. Google Email: utkarshraj98723@gmail.com
