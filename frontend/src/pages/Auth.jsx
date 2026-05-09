@@ -85,7 +85,11 @@ export default function Auth() {
   };
 
   const handleGoogleLogin = () => {
+<<<<<<< HEAD
     window.location.href = 'http://localhost:5000/api/v1/auth/google';
+=======
+    window.location.href = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/v1/auth/google`;
+>>>>>>> parent of 9b47485 (work started-02)
   };
 
   return (

@@ -1990,6 +1990,7 @@ an amazing personal music streaming experience.
 Happy Coding! 🎵🚀
 
 ================================================================================
+<<<<<<< HEAD
 
 
 
@@ -1998,3 +1999,5 @@ Authentication Details:
 2. Supabase-pgSQL: (jaycob4498@gmail.com)
 3. Google Cloud Console: (jaycob4498@gmail.com)
 4. Google Email: (utkarshraj98723@gmail.com)
+=======
+>>>>>>> parent of 9b47485 (work started-02)
