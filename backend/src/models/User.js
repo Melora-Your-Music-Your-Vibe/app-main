@@ -36,10 +36,6 @@ const User = sequelize.define('User', {
     type: DataTypes.ENUM('local', 'google', 'guest'),
     defaultValue: 'local',
   },
-  approvalStatus: {
-    type: DataTypes.ENUM('pending', 'approved', 'rejected'),
-    defaultValue: 'approved',
-  },
   googleId: {
     type: DataTypes.STRING,
     unique: true,

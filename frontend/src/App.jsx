@@ -14,11 +14,7 @@ import SearchPage from './pages/Search';
 import LibraryPage from './pages/Library';
 import FavoritesPage from './pages/Favorites';
 import SettingsPage from './pages/Settings';
-import ProfilePage from './pages/Profile';
-import RewardsPage from './pages/Rewards';
 import CreatorDashboard from './pages/Creator';
-import AdminLogin from './pages/admin/AdminLogin';
-import AdminDashboard from './pages/admin/AdminDashboard';
 
 import './index.css';
 import './App.css';
@@ -96,8 +92,6 @@ export default function App() {
               <Route path="/favorites" element={<FavoritesPage />} />
               <Route path="/playlists" element={<LibraryPage />} />
               <Route path="/settings" element={<SettingsPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/rewards" element={<RewardsPage />} />
 
               {/* Creator/Admin only */}
               <Route element={<CreatorRoute />}>
@@ -105,10 +99,6 @@ export default function App() {
               </Route>
             </Route>
           </Route>
-
-          {/* Admin Routes */}
-          <Route path="/admin-utkarsh" element={<AdminLogin />} />
-          <Route path="/admin-utkarsh/dashboard" element={<AdminDashboard />} />
 
           {/* Catch all */}
           <Route path="*" element={<Navigate to="/" replace />} />

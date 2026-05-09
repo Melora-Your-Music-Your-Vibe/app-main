@@ -30,26 +30,18 @@ const register = async (req, res, next) => {
     const otp = generateOTP();
     const otpExpiresAt = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000);
 
-    const approvalStatus = role === 'creator' ? 'pending' : 'approved';
-
     const user = await User.create({
       name,
       email,
       password,
       role: role === 'creator' ? 'creator' : 'user',
       authMethod: 'local',
-      approvalStatus,
       otp,
       otpExpiresAt,
     });
 
     // Send OTP email
     await sendOTPEmail(email, otp, name);
-
-    // If creator, we don't log them in automatically yet, they need admin approval AND email verification.
-    // Wait, the flow currently logs them in. The user said: "when the user submits a signup form as a creator...that request forwarded for approval..."
-    // If they are pending, we can still let them verify OTP, but they can't access creator features. 
-    // Wait, the prompt says: "if they will enter their credentials on the login page, instead of invalid show them... admin approval pending."
 
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
@@ -59,14 +51,9 @@ const register = async (req, res, next) => {
 
     setAuthCookies(res, accessToken, refreshToken);
 
-    let successMessage = 'Registration successful! Please verify your email with the OTP sent.';
-    if (role === 'creator') {
-      successMessage = 'Registration successful! Your creator request has been forwarded for approval. Updates will be provided in 24-48 hours. Please verify your email with the OTP sent.';
-    }
-
     res.status(201).json({
       success: true,
-      message: successMessage,
+      message: 'Registration successful! Please verify your email with the OTP sent.',
       data: {
         user: user.toJSON(),
         accessToken,
@@ -97,13 +84,6 @@ const login = async (req, res, next) => {
         success: false,
         message: `This account uses ${user.authMethod} login. Please use that method.`,
       });
-    }
-
-    if (user.approvalStatus === 'pending') {
-      return res.status(403).json({ success: false, message: 'Admin approval pending. Please wait 24-48 hours for your creator account to be approved.' });
-    }
-    if (user.approvalStatus === 'rejected') {
-      return res.status(403).json({ success: false, message: 'Your creator application was rejected.' });
     }
 
     const isMatch = await user.comparePassword(password);
@@ -449,107 +429,6 @@ const googleCallback = async (req, res, next) => {
   }
 };
 
-// --- ADMIN ROUTES ---
-
-// @desc    Admin login
-// @route   POST /api/v1/auth/admin-login
-const adminLogin = async (req, res, next) => {
-  try {
-    const { username, password } = req.body;
-    
-    // Hardcoded credentials as requested by user
-    if (username === 'utkarshRaj' && password === 'Utk@9399') {
-      // Create a super admin token
-      const adminToken = jwt.sign(
-        { id: 'admin-super', role: 'superadmin', name: 'Utkarsh Raj' },
-        process.env.JWT_SECRET,
-        { expiresIn: '1d' }
-      );
-      
-      return res.json({
-        success: true,
-        message: 'Admin login successful',
-        data: { accessToken: adminToken }
-      });
-    }
-    
-    return res.status(401).json({ success: false, message: 'Invalid admin credentials' });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// @desc    Get Admin Dashboard Data
-// @route   GET /api/v1/auth/admin/dashboard
-const getAdminDashboard = async (req, res, next) => {
-  try {
-    const creators = await User.findAll({ 
-      where: { role: 'creator' },
-      order: [['createdAt', 'DESC']],
-      attributes: { exclude: ['password', 'otp', 'refreshToken'] }
-    });
-    
-    const pendingCount = creators.filter(c => c.approvalStatus === 'pending').length;
-    const approvedCount = creators.filter(c => c.approvalStatus === 'approved').length;
-    const totalCount = creators.length;
-
-    res.json({
-      success: true,
-      data: {
-        creators,
-        stats: { totalCount, pendingCount, approvedCount }
-      }
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// @desc    Approve/Reject Creator
-// @route   PUT /api/v1/auth/admin/creators/:id/status
-const updateCreatorStatus = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const { status } = req.body; // 'approved' or 'rejected'
-    
-    if (!['approved', 'rejected', 'pending'].includes(status)) {
-      return res.status(400).json({ success: false, message: 'Invalid status' });
-    }
-
-    const user = await User.findByPk(id);
-    if (!user) return res.status(404).json({ success: false, message: 'User not found' });
-    
-    user.approvalStatus = status;
-    await user.save();
-    
-    res.json({ success: true, message: `Creator status updated to ${status}` });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// @desc    Admin Edit User Details
-// @route   PUT /api/v1/auth/admin/users/:id
-const adminEditUser = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const { name, email, newPassword } = req.body;
-    
-    const user = await User.findByPk(id);
-    if (!user) return res.status(404).json({ success: false, message: 'User not found' });
-    
-    if (name) user.name = name;
-    if (email) user.email = email;
-    if (newPassword) user.password = newPassword; // Will be hashed by Sequelize hook
-    
-    await user.save();
-    
-    res.json({ success: true, message: 'User updated successfully' });
-  } catch (error) {
-    next(error);
-  }
-};
-
 module.exports = {
   register,
   login,
@@ -564,8 +443,4 @@ module.exports = {
   getMe,
   updateProfile,
   googleCallback,
-  adminLogin,
-  getAdminDashboard,
-  updateCreatorStatus,
-  adminEditUser
 };
