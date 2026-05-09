@@ -1,0 +1,2000 @@
+================================================================================
+                        MELORA - YOUR MUSIC, YOUR VIBE
+                    Personal Music Streaming Web Application
+================================================================================
+
+PROJECT OVERVIEW
+================================================================================
+Name: Melora
+Tagline: Your Music, Your Vibe
+Description: A personal, ad-free music streaming web application optimized for 
+             Android and iOS devices, providing Spotify-like experience with 
+             5000+ songs hosted on free cloud infrastructure.
+
+Target Platform: Progressive Web App (PWA) - Mobile-First Design
+Tech Stack: React.js (Frontend) + Node.js/Express (Backend)
+Purpose: Personal music streaming without advertisements
+
+
+================================================================================
+                            TECHNOLOGY STACK
+================================================================================
+
+FRONTEND
+--------
+- Framework: React 18.x with Vite
+- Routing: React Router DOM v6
+- State Management: Zustand / Redux Toolkit (choose one)
+- UI Framework: Tailwind CSS + shadcn/ui components
+- Audio Player: Howler.js or react-h5-audio-player
+- HTTP Client: Axios
+- PWA: Vite PWA Plugin (workbox)
+- Icons: Lucide React / React Icons
+- Animations: Framer Motion (optional)
+- Build Tool: Vite
+
+BACKEND
+-------
+- Runtime: Node.js v18+
+- Framework: Express.js
+- Database: MongoDB with Mongoose ODM
+- Authentication: JWT (JSON Web Tokens)
+- File Upload: Multer
+- Cloud Storage: Cloudinary SDK / AWS S3
+- Security: Helmet, CORS, express-rate-limit
+- Validation: Joi / express-validator
+- Environment: dotenv
+- Process Manager: PM2 (for production)
+
+DATABASE
+--------
+- Primary: MongoDB Atlas (Free Tier: 512MB)
+- ORM: Mongoose
+
+CLOUD STORAGE
+-------------
+- Audio Files: Cloudinary (Free: 25GB) or Backblaze B2
+- Thumbnails: Cloudinary
+
+HOSTING
+-------
+- Frontend: Vercel / Netlify
+- Backend: Render / Railway / Cyclic
+- Database: MongoDB Atlas (Cloud)
+
+
+================================================================================
+                          APPLICATION STRUCTURE
+================================================================================
+
+FRONTEND FOLDER STRUCTURE
+-------------------------
+melora-frontend/
+│
+├── public/
+│   ├── icons/
+│   │   ├── icon-192x192.png
+│   │   ├── icon-512x512.png
+│   │   └── favicon.ico
+│   ├── manifest.json
+│   └── robots.txt
+│
+├── src/
+│   ├── assets/
+│   │   ├── images/
+│   │   │   ├── logo.svg
+│   │   │   ├── default-album.png
+│   │   │   └── default-artist.png
+│   │   └── styles/
+│   │       └── global.css
+│   │
+│   ├── components/
+│   │   ├── common/
+│   │   │   ├── Header.jsx
+│   │   │   ├── Sidebar.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   ├── Loader.jsx
+│   │   │   ├── ErrorBoundary.jsx
+│   │   │   └── Toast.jsx
+│   │   │
+│   │   ├── player/
+│   │   │   ├── AudioPlayer.jsx
+│   │   │   ├── PlayerControls.jsx
+│   │   │   ├── ProgressBar.jsx
+│   │   │   ├── VolumeControl.jsx
+│   │   │   └── QueuePanel.jsx
+│   │   │
+│   │   ├── song/
+│   │   │   ├── SongCard.jsx
+│   │   │   ├── SongList.jsx
+│   │   │   ├── SongItem.jsx
+│   │   │   └── SongDetails.jsx
+│   │   │
+│   │   ├── playlist/
+│   │   │   ├── PlaylistCard.jsx
+│   │   │   ├── PlaylistList.jsx
+│   │   │   ├── CreatePlaylist.jsx
+│   │   │   └── EditPlaylist.jsx
+│   │   │
+│   │   └── search/
+│   │       ├── SearchBar.jsx
+│   │       └── SearchResults.jsx
+│   │
+│   ├── pages/
+│   │   ├── Home.jsx
+│   │   ├── Browse.jsx
+│   │   ├── Search.jsx
+│   │   ├── Library.jsx
+│   │   ├── Favorites.jsx
+│   │   ├── Playlists.jsx
+│   │   ├── PlaylistDetails.jsx
+│   │   ├── Artist.jsx
+│   │   ├── Album.jsx
+│   │   ├── RecentlyPlayed.jsx
+│   │   ├── Settings.jsx
+│   │   └── NotFound.jsx
+│   │
+│   ├── hooks/
+│   │   ├── useAudio.js
+│   │   ├── usePlayer.js
+│   │   ├── useFetch.js
+│   │   └── useDebounce.js
+│   │
+│   ├── store/
+│   │   ├── playerSlice.js
+│   │   ├── songSlice.js
+│   │   ├── playlistSlice.js
+│   │   └── index.js
+│   │
+│   ├── services/
+│   │   ├── api.js
+│   │   ├── songService.js
+│   │   ├── playlistService.js
+│   │   └── storageService.js
+│   │
+│   ├── utils/
+│   │   ├── formatTime.js
+│   │   ├── formatDate.js
+│   │   ├── constants.js
+│   │   └── helpers.js
+│   │
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── routes.jsx
+│
+├── .env
+├── .env.example
+├── .gitignore
+├── package.json
+├── vite.config.js
+├── tailwind.config.js
+└── README.md
+
+
+BACKEND FOLDER STRUCTURE
+------------------------
+melora-backend/
+│
+├── src/
+│   ├── config/
+│   │   ├── db.js
+│   │   ├── cloudinary.js
+│   │   └── constants.js
+│   │
+│   ├── models/
+│   │   ├── Song.js
+│   │   ├── Playlist.js
+│   │   ├── Artist.js
+│   │   ├── Album.js
+│   │   └── RecentlyPlayed.js
+│   │
+│   ├── controllers/
+│   │   ├── songController.js
+│   │   ├── playlistController.js
+│   │   ├── artistController.js
+│   │   ├── albumController.js
+│   │   └── searchController.js
+│   │
+│   ├── routes/
+│   │   ├── songRoutes.js
+│   │   ├── playlistRoutes.js
+│   │   ├── artistRoutes.js
+│   │   ├── albumRoutes.js
+│   │   └── searchRoutes.js
+│   │
+│   ├── middlewares/
+│   │   ├── errorHandler.js
+│   │   ├── validation.js
+│   │   └── upload.js
+│   │
+│   ├── utils/
+│   │   ├── cloudinaryUpload.js
+│   │   ├── helpers.js
+│   │   └── logger.js
+│   │
+│   └── server.js
+│
+├── uploads/ (temporary - gitignored)
+├── .env
+├── .env.example
+├── .gitignore
+├── package.json
+└── README.md
+
+
+================================================================================
+                          DATABASE SCHEMA DESIGN
+================================================================================
+
+1. SONGS COLLECTION
+-------------------
+{
+  _id: ObjectId,
+  title: String (required, indexed),
+  artist: String (required, indexed),
+  artistId: ObjectId (ref: 'Artist'),
+  album: String (required),
+  albumId: ObjectId (ref: 'Album'),
+  genre: String (indexed),
+  year: Number,
+  duration: Number (in seconds),
+  audioUrl: String (required) - Cloudinary URL,
+  thumbnailUrl: String (required) - Album art,
+  lyrics: String (optional),
+  language: String,
+  playCount: Number (default: 0),
+  isFavorite: Boolean (default: false),
+  tags: [String],
+  fileSize: Number (in bytes),
+  bitrate: String (e.g., "320kbps"),
+  createdAt: Date,
+  updatedAt: Date
+}
+
+Indexes:
+- title (text index for search)
+- artist (text index for search)
+- genre
+- playCount (descending for popular songs)
+
+
+2. PLAYLISTS COLLECTION
+-----------------------
+{
+  _id: ObjectId,
+  name: String (required),
+  description: String,
+  coverImage: String (URL),
+  songs: [ObjectId] (ref: 'Song'),
+  songCount: Number (default: 0),
+  totalDuration: Number (in seconds),
+  isPublic: Boolean (default: false),
+  createdAt: Date,
+  updatedAt: Date
+}
+
+
+3. ARTISTS COLLECTION
+---------------------
+{
+  _id: ObjectId,
+  name: String (required, unique, indexed),
+  bio: String,
+  profileImage: String (URL),
+  genre: [String],
+  socialLinks: {
+    spotify: String,
+    youtube: String,
+    instagram: String
+  },
+  songCount: Number (default: 0),
+  albumCount: Number (default: 0),
+  createdAt: Date,
+  updatedAt: Date
+}
+
+
+4. ALBUMS COLLECTION
+--------------------
+{
+  _id: ObjectId,
+  title: String (required, indexed),
+  artist: String (required),
+  artistId: ObjectId (ref: 'Artist'),
+  year: Number,
+  genre: String,
+  coverImage: String (URL),
+  totalTracks: Number,
+  totalDuration: Number (in seconds),
+  songs: [ObjectId] (ref: 'Song'),
+  createdAt: Date,
+  updatedAt: Date
+}
+
+
+5. RECENTLY PLAYED COLLECTION
+-----------------------------
+{
+  _id: ObjectId,
+  songId: ObjectId (ref: 'Song', required),
+  playedAt: Date (default: Date.now),
+  deviceInfo: String (optional)
+}
+
+Indexes:
+- playedAt (descending)
+- Compound index: songId + playedAt
+
+
+6. FAVORITES COLLECTION (Alternative to boolean in Songs)
+---------------------------------------------------------
+{
+  _id: ObjectId,
+  songId: ObjectId (ref: 'Song', required),
+  addedAt: Date (default: Date.now)
+}
+
+
+================================================================================
+                          API ENDPOINTS DOCUMENTATION
+================================================================================
+
+BASE URL: http://localhost:5000/api/v1
+Production: https://melora-api.onrender.com/api/v1
+
+
+SONGS ENDPOINTS
+---------------
+
+1. GET /songs
+   Description: Get all songs with pagination
+   Query Params:
+     - page (default: 1)
+     - limit (default: 20)
+     - genre (optional)
+     - year (optional)
+     - artist (optional)
+     - sortBy (playCount | createdAt | title) (default: createdAt)
+     - order (asc | desc) (default: desc)
+   Response: {
+     success: true,
+     data: [...songs],
+     pagination: {
+       currentPage: 1,
+       totalPages: 10,
+       totalSongs: 200,
+       hasMore: true
+     }
+   }
+
+2. GET /songs/:id
+   Description: Get single song details
+   Response: {
+     success: true,
+     data: {song object}
+   }
+
+3. POST /songs
+   Description: Upload a new song (Admin only for now)
+   Content-Type: multipart/form-data
+   Body:
+     - audioFile (file)
+     - thumbnail (file)
+     - title
+     - artist
+     - album
+     - genre
+     - year
+     - lyrics (optional)
+   Response: {
+     success: true,
+     message: "Song uploaded successfully",
+     data: {song object}
+   }
+
+4. PUT /songs/:id
+   Description: Update song metadata
+   Body: {any song fields to update}
+   Response: {
+     success: true,
+     message: "Song updated successfully",
+     data: {updated song}
+   }
+
+5. DELETE /songs/:id
+   Description: Delete a song
+   Response: {
+     success: true,
+     message: "Song deleted successfully"
+   }
+
+6. GET /songs/popular
+   Description: Get popular songs (sorted by playCount)
+   Query Params:
+     - limit (default: 20)
+   Response: {
+     success: true,
+     data: [...popular songs]
+   }
+
+7. GET /songs/latest
+   Description: Get latest added songs
+   Query Params:
+     - limit (default: 20)
+   Response: {
+     success: true,
+     data: [...latest songs]
+   }
+
+8. PATCH /songs/:id/play
+   Description: Increment play count
+   Response: {
+     success: true,
+     message: "Play count updated"
+   }
+
+9. PATCH /songs/:id/favorite
+   Description: Toggle favorite status
+   Response: {
+     success: true,
+     data: {
+       isFavorite: true/false
+     }
+   }
+
+
+PLAYLIST ENDPOINTS
+------------------
+
+1. GET /playlists
+   Description: Get all playlists
+   Response: {
+     success: true,
+     data: [...playlists]
+   }
+
+2. GET /playlists/:id
+   Description: Get playlist details with songs
+   Response: {
+     success: true,
+     data: {
+       playlist: {...},
+       songs: [...]
+     }
+   }
+
+3. POST /playlists
+   Description: Create new playlist
+   Body: {
+     name: "My Playlist",
+     description: "Description here",
+     coverImage: "url" (optional)
+   }
+   Response: {
+     success: true,
+     message: "Playlist created successfully",
+     data: {playlist object}
+   }
+
+4. PUT /playlists/:id
+   Description: Update playlist details
+   Body: {name, description, coverImage}
+   Response: {
+     success: true,
+     data: {updated playlist}
+   }
+
+5. DELETE /playlists/:id
+   Description: Delete playlist
+   Response: {
+     success: true,
+     message: "Playlist deleted successfully"
+   }
+
+6. POST /playlists/:id/songs
+   Description: Add song to playlist
+   Body: {
+     songId: "song_id_here"
+   }
+   Response: {
+     success: true,
+     message: "Song added to playlist"
+   }
+
+7. DELETE /playlists/:id/songs/:songId
+   Description: Remove song from playlist
+   Response: {
+     success: true,
+     message: "Song removed from playlist"
+   }
+
+
+ARTIST ENDPOINTS
+----------------
+
+1. GET /artists
+   Description: Get all artists
+   Query Params:
+     - page, limit, sortBy
+   Response: {
+     success: true,
+     data: [...artists]
+   }
+
+2. GET /artists/:id
+   Description: Get artist details
+   Response: {
+     success: true,
+     data: {artist object}
+   }
+
+3. GET /artists/:id/songs
+   Description: Get all songs by artist
+   Response: {
+     success: true,
+     data: [...songs]
+   }
+
+4. GET /artists/:id/albums
+   Description: Get all albums by artist
+   Response: {
+     success: true,
+     data: [...albums]
+   }
+
+
+ALBUM ENDPOINTS
+---------------
+
+1. GET /albums
+   Description: Get all albums
+   Query Params:
+     - page, limit, year, genre
+   Response: {
+     success: true,
+     data: [...albums]
+   }
+
+2. GET /albums/:id
+   Description: Get album details with songs
+   Response: {
+     success: true,
+     data: {
+       album: {...},
+       songs: [...]
+     }
+   }
+
+3. GET /albums/:id/songs
+   Description: Get all songs in album
+   Response: {
+     success: true,
+     data: [...songs]
+   }
+
+
+SEARCH ENDPOINTS
+----------------
+
+1. GET /search
+   Description: Global search across songs, artists, albums
+   Query Params:
+     - q (search query) (required)
+     - type (all | songs | artists | albums) (default: all)
+     - limit (default: 20)
+   Response: {
+     success: true,
+     data: {
+       songs: [...],
+       artists: [...],
+       albums: [...]
+     }
+   }
+
+2. GET /search/suggestions
+   Description: Get search suggestions (autocomplete)
+   Query Params:
+     - q (search query)
+   Response: {
+     success: true,
+     data: [...suggestions]
+   }
+
+
+FAVORITES ENDPOINTS
+-------------------
+
+1. GET /favorites
+   Description: Get all favorite songs
+   Response: {
+     success: true,
+     data: [...favorite songs]
+   }
+
+2. POST /favorites/:songId
+   Description: Add song to favorites
+   Response: {
+     success: true,
+     message: "Added to favorites"
+   }
+
+3. DELETE /favorites/:songId
+   Description: Remove from favorites
+   Response: {
+     success: true,
+     message: "Removed from favorites"
+   }
+
+
+RECENTLY PLAYED ENDPOINTS
+--------------------------
+
+1. GET /recently-played
+   Description: Get recently played songs
+   Query Params:
+     - limit (default: 50)
+   Response: {
+     success: true,
+     data: [...recently played songs]
+   }
+
+2. POST /recently-played
+   Description: Add song to recently played
+   Body: {
+     songId: "song_id_here"
+   }
+   Response: {
+     success: true,
+     message: "Added to recently played"
+   }
+
+
+STATISTICS ENDPOINTS
+--------------------
+
+1. GET /stats/overview
+   Description: Get app statistics
+   Response: {
+     success: true,
+     data: {
+       totalSongs: 5000,
+       totalArtists: 500,
+       totalAlbums: 300,
+       totalPlaylists: 50,
+       totalPlaytime: 150000 (in seconds)
+     }
+   }
+
+
+================================================================================
+                        FRONTEND PAGES & COMPONENTS
+================================================================================
+
+1. HOME PAGE (/)
+----------------
+Components:
+  - Hero Section with featured/random song
+  - Popular Songs Section (Top 20)
+  - Recently Played Section
+  - Recommended Playlists
+  - New Releases Section
+  - Quick Actions (Shuffle All, Play All)
+
+Features:
+  - Auto-play featured song on hover
+  - Smooth scrolling sections
+  - Skeleton loaders
+  - Infinite scroll for sections
+
+
+2. BROWSE PAGE (/browse)
+-------------------------
+Components:
+  - Genre Filter Pills
+  - Year Filter Dropdown
+  - Artist Filter
+  - Sort Options (Latest, Popular, A-Z)
+  - Song Grid/List View Toggle
+  - Pagination/Infinite Scroll
+
+Features:
+  - Multi-filter support
+  - URL query params for filters
+  - Responsive grid layout
+
+
+3. SEARCH PAGE (/search)
+-------------------------
+Components:
+  - Search Bar with autocomplete
+  - Search Results Tabs (All, Songs, Artists, Albums)
+  - Recent Searches
+  - Trending Searches
+
+Features:
+  - Real-time search (debounced)
+  - Search history (localStorage)
+  - Empty state illustrations
+  - Keyboard shortcuts (Ctrl+K to focus)
+
+
+4. LIBRARY PAGE (/library)
+---------------------------
+Components:
+  - Tabs: Playlists | Favorites | Recently Played
+  - Create Playlist Button
+  - Library Stats Card
+  - Song Count by Genre Chart
+
+Features:
+  - Quick access to all user collections
+  - Sorting and filtering
+
+
+5. FAVORITES PAGE (/favorites)
+-------------------------------
+Components:
+  - All favorited songs list
+  - Play All button
+  - Shuffle button
+  - Remove from favorites action
+  - Empty state
+
+Features:
+  - Bulk actions (Remove multiple)
+  - Export playlist
+
+
+6. PLAYLISTS PAGE (/playlists)
+-------------------------------
+Components:
+  - Playlist Grid
+  - Create New Playlist Card
+  - Playlist Stats (song count, duration)
+
+Features:
+  - Drag and drop to reorder
+  - Delete playlist with confirmation
+
+
+7. PLAYLIST DETAILS PAGE (/playlists/:id)
+------------------------------------------
+Components:
+  - Playlist Header (cover, name, description, stats)
+  - Edit Playlist Button
+  - Song List with drag-drop reordering
+  - Add Songs Button
+  - Play/Shuffle Playlist
+
+Features:
+  - Inline song reordering
+  - Remove songs
+  - Edit playlist metadata
+  - Share playlist (future)
+
+
+8. ARTIST PAGE (/artists/:id)
+------------------------------
+Components:
+  - Artist Header (image, name, bio)
+  - Popular Songs by Artist
+  - All Albums by Artist
+  - Similar Artists (future)
+
+Features:
+  - Follow artist (future)
+  - Social media links
+
+
+9. ALBUM PAGE (/albums/:id)
+----------------------------
+Components:
+  - Album Header (cover, title, artist, year)
+  - Track List
+  - Album Info (genre, duration, track count)
+
+Features:
+  - Play album from start
+  - Add all to playlist
+
+
+10. RECENTLY PLAYED PAGE (/recently-played)
+--------------------------------------------
+Components:
+  - Chronological list of played songs
+  - Date separators
+  - Play again button
+  - Clear history option
+
+Features:
+  - Group by date
+  - Auto-refresh
+
+
+11. SETTINGS PAGE (/settings)
+------------------------------
+Sections:
+  - Playback Settings
+    • Audio Quality (128kbps, 320kbps)
+    • Crossfade Duration
+    • Volume Normalization
+  
+  - Appearance
+    • Dark/Light/Auto Theme
+    • Accent Color Picker
+    • Compact View Toggle
+  
+  - Storage
+    • Offline Downloads (future)
+    • Cache Management
+    • Clear All Data
+  
+  - About
+    • App Version
+    • Credits
+    • GitHub Link
+
+Features:
+  - Settings saved to localStorage
+  - Reset to defaults button
+
+
+12. NOT FOUND PAGE (/404)
+--------------------------
+Components:
+  - 404 Illustration
+  - Back to Home Button
+  - Popular Songs Suggestions
+
+
+================================================================================
+                        AUDIO PLAYER COMPONENT
+================================================================================
+
+PLAYER CONTROLS LAYOUT
+-----------------------
+┌─────────────────────────────────────────────────────────────────┐
+│  [Album Art]  Song Title - Artist                    [Queue]    │
+│                                                                   │
+│                    ╔═══════════════════╗                         │
+│                    ║  Progress Bar     ║                         │
+│                    ╚═══════════════════╝                         │
+│                   0:00              3:45                         │
+│                                                                   │
+│     [Shuffle] [Prev] [Play/Pause] [Next] [Repeat]               │
+│                                                                   │
+│     [Volume Icon] ═══════════════ [Download] [Like] [More]      │
+└─────────────────────────────────────────────────────────────────┘
+
+PLAYER FEATURES
+---------------
+1. Basic Controls
+   - Play/Pause
+   - Next Track
+   - Previous Track
+   - Seek (click anywhere on progress bar)
+   - Volume Control (0-100%)
+   - Mute/Unmute
+
+2. Advanced Controls
+   - Shuffle Mode (random play order)
+   - Repeat Modes (Off, Repeat All, Repeat One)
+   - Speed Control (0.5x to 2x) (future)
+   - 10s Forward/Backward Skip
+
+3. Queue Management
+   - View current queue
+   - Add to queue
+   - Remove from queue
+   - Clear queue
+   - Reorder queue (drag-drop)
+
+4. Progress Features
+   - Current time display
+   - Total duration display
+   - Seek bar with hover preview
+   - Buffering indicator
+
+5. Playback Modes
+   - Normal Play
+   - Shuffle All
+   - Radio Mode (auto-similar songs) (future)
+
+6. Keyboard Shortcuts
+   - Space: Play/Pause
+   - Arrow Right: Next Song
+   - Arrow Left: Previous Song
+   - Arrow Up: Volume Up
+   - Arrow Down: Volume Down
+   - M: Mute/Unmute
+   - L: Like/Unlike
+   - S: Shuffle Toggle
+   - R: Repeat Toggle
+
+7. Player State Management
+   - Current song
+   - Playing status
+   - Current time
+   - Duration
+   - Volume level
+   - Shuffle status
+   - Repeat mode
+   - Queue array
+
+8. Persistent Features
+   - Save player state to localStorage
+   - Resume playback on reload
+   - Remember volume level
+   - Remember queue
+
+
+PLAYER COMPONENT STRUCTURE
+---------------------------
+<AudioPlayer>
+  <PlayerTrackInfo />
+    - Album Art
+    - Song Title
+    - Artist Name
+    - Quick Actions (Like, Add to Playlist)
+  
+  <PlayerProgress />
+    - Progress Bar
+    - Current Time
+    - Total Duration
+  
+  <PlayerMainControls />
+    - Shuffle Button
+    - Previous Button
+    - Play/Pause Button
+    - Next Button
+    - Repeat Button
+  
+  <PlayerVolumeControls />
+    - Volume Icon
+    - Volume Slider
+    - Mute Button
+  
+  <PlayerQueue />
+    - Queue Panel (slide-in)
+    - Queue List
+    - Clear Queue Button
+</AudioPlayer>
+
+
+================================================================================
+                        AUTHENTICATION (FUTURE PHASE)
+================================================================================
+
+NOTE: For personal use, authentication is NOT required initially.
+      Implement when scaling to multi-user.
+
+When implementing authentication:
+
+1. USER MODEL
+-------------
+{
+  _id: ObjectId,
+  email: String (unique, required),
+  password: String (hashed),
+  name: String,
+  profilePicture: String,
+  createdAt: Date,
+  lastLogin: Date,
+  isAdmin: Boolean (default: false)
+}
+
+2. AUTH ENDPOINTS
+-----------------
+POST /auth/register - Register new user
+POST /auth/login - Login user
+POST /auth/logout - Logout user
+GET /auth/me - Get current user
+PUT /auth/update-profile - Update profile
+PUT /auth/change-password - Change password
+POST /auth/forgot-password - Forgot password
+POST /auth/reset-password - Reset password
+
+3. JWT IMPLEMENTATION
+---------------------
+- Access Token: 15 minutes expiry
+- Refresh Token: 7 days expiry
+- Store in httpOnly cookies
+- Middleware: verifyToken
+
+
+================================================================================
+                        PROGRESSIVE WEB APP (PWA)
+================================================================================
+
+MANIFEST.JSON
+-------------
+{
+  "name": "Melora - Your Music, Your Vibe",
+  "short_name": "Melora",
+  "description": "Personal music streaming app",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#1db954",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
+
+SERVICE WORKER FEATURES
+-----------------------
+1. Offline Support
+   - Cache app shell
+   - Cache song metadata
+   - Cache thumbnails
+   - Offline fallback page
+
+2. Background Sync
+   - Sync play counts when online
+   - Sync favorites changes
+   - Sync playlist updates
+
+3. Push Notifications (future)
+   - New songs added
+   - Playlist updates
+
+4. Caching Strategy
+   - App shell: Cache First
+   - API calls: Network First, fallback to Cache
+   - Images: Cache First
+   - Audio: Network Only (large files)
+
+INSTALLABILITY
+--------------
+- Add "Install App" prompt
+- iOS: Add to Home Screen instructions
+- Android: Native install banner
+- Desktop: Install via browser
+
+
+================================================================================
+                        UI/UX DESIGN GUIDELINES
+================================================================================
+
+COLOR PALETTE
+-------------
+Primary Colors:
+  - Brand Green: #1db954 (Spotify-inspired)
+  - Dark Background: #0f172a (Tailwind slate-900)
+  - Card Background: #1e293b (Tailwind slate-800)
+  - Text Primary: #f1f5f9 (Tailwind slate-100)
+  - Text Secondary: #94a3b8 (Tailwind slate-400)
+
+Accent Colors:
+  - Success: #10b981 (Tailwind emerald-500)
+  - Error: #ef4444 (Tailwind red-500)
+  - Warning: #f59e0b (Tailwind amber-500)
+  - Info: #3b82f6 (Tailwind blue-500)
+
+Gradients:
+  - Hero: linear-gradient(135deg, #1db954 0%, #1ed760 100%)
+  - Card Hover: linear-gradient(135deg, #1e293b 0%, #334155 100%)
+
+TYPOGRAPHY
+----------
+Font Family: Inter, system-ui, sans-serif
+
+Headings:
+  - H1: 2.5rem (40px) - font-bold
+  - H2: 2rem (32px) - font-semibold
+  - H3: 1.5rem (24px) - font-semibold
+  - H4: 1.25rem (20px) - font-medium
+
+Body:
+  - Regular: 1rem (16px) - font-normal
+  - Small: 0.875rem (14px) - font-normal
+  - Tiny: 0.75rem (12px) - font-normal
+
+SPACING & LAYOUT
+----------------
+Container: max-width: 1400px
+Padding: 1rem (mobile), 2rem (tablet), 3rem (desktop)
+Gap: 1rem, 1.5rem, 2rem
+
+COMPONENT STYLES
+----------------
+1. Cards
+   - Border radius: 0.75rem (12px)
+   - Box shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
+   - Hover: scale(1.05), shadow-lg
+   - Transition: all 0.3s ease
+
+2. Buttons
+   - Primary: bg-green-500, text-white, rounded-full
+   - Secondary: bg-slate-700, text-white, rounded-full
+   - Icon: circular, hover:bg-slate-700
+   - Padding: px-6 py-3
+
+3. Inputs
+   - Background: bg-slate-800
+   - Border: 2px solid transparent
+   - Focus: border-green-500
+   - Rounded: rounded-lg
+
+4. Song Cards
+   - Album art: square, rounded-lg
+   - Hover: show play button overlay
+   - Transition: smooth 0.2s
+
+ANIMATIONS
+----------
+- Page transitions: fade-in
+- Card hover: scale + shadow
+- Button click: scale(0.95)
+- Loading: skeleton shimmer
+- Music bars: wave animation
+- Progress bar: smooth fill
+
+RESPONSIVE BREAKPOINTS
+----------------------
+- Mobile: < 640px
+- Tablet: 640px - 1024px
+- Desktop: > 1024px
+
+Mobile-First Approach:
+  - Stack vertically on mobile
+  - Grid layout on tablet/desktop
+  - Collapsible sidebar on mobile
+  - Bottom player on mobile, side player on desktop
+
+
+================================================================================
+                        STATE MANAGEMENT STRUCTURE
+================================================================================
+
+Using Zustand (Recommended for this project)
+
+PLAYER STORE
+------------
+{
+  // Current playback state
+  currentSong: null,
+  isPlaying: false,
+  currentTime: 0,
+  duration: 0,
+  volume: 80,
+  isMuted: false,
+  
+  // Playback modes
+  shuffle: false,
+  repeat: 'off', // 'off' | 'all' | 'one'
+  
+  // Queue management
+  queue: [],
+  currentIndex: 0,
+  originalQueue: [], // for shuffle
+  
+  // Actions
+  playSong: (song) => {},
+  pauseSong: () => {},
+  nextSong: () => {},
+  prevSong: () => {},
+  seekTo: (time) => {},
+  setVolume: (volume) => {},
+  toggleMute: () => {},
+  toggleShuffle: () => {},
+  toggleRepeat: () => {},
+  addToQueue: (song) => {},
+  removeFromQueue: (index) => {},
+  clearQueue: () => {},
+}
+
+SONGS STORE
+-----------
+{
+  songs: [],
+  loading: false,
+  error: null,
+  currentPage: 1,
+  totalPages: 1,
+  filters: {
+    genre: null,
+    year: null,
+    artist: null,
+    search: ''
+  },
+  
+  // Actions
+  fetchSongs: () => {},
+  fetchSongById: (id) => {},
+  setFilters: (filters) => {},
+  clearFilters: () => {},
+}
+
+PLAYLIST STORE
+--------------
+{
+  playlists: [],
+  currentPlaylist: null,
+  loading: false,
+  error: null,
+  
+  // Actions
+  fetchPlaylists: () => {},
+  fetchPlaylistById: (id) => {},
+  createPlaylist: (data) => {},
+  updatePlaylist: (id, data) => {},
+  deletePlaylist: (id) => {},
+  addSongToPlaylist: (playlistId, songId) => {},
+  removeSongFromPlaylist: (playlistId, songId) => {},
+}
+
+FAVORITES STORE
+---------------
+{
+  favorites: [],
+  
+  // Actions
+  fetchFavorites: () => {},
+  addFavorite: (songId) => {},
+  removeFavorite: (songId) => {},
+  isFavorite: (songId) => {},
+}
+
+
+================================================================================
+                        API SERVICE STRUCTURE
+================================================================================
+
+API BASE CONFIGURATION (services/api.js)
+----------------------------------------
+import axios from 'axios';
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Request interceptor
+api.interceptors.request.use(
+  (config) => {
+    // Add auth token if available
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response interceptor
+api.interceptors.response.use(
+  (response) => response.data,
+  (error) => {
+    // Handle errors globally
+    const message = error.response?.data?.message || 'Something went wrong';
+    return Promise.reject(message);
+  }
+);
+
+export default api;
+
+
+SONG SERVICE (services/songService.js)
+---------------------------------------
+import api from './api';
+
+export const songService = {
+  getAllSongs: (params) => api.get('/songs', { params }),
+  getSongById: (id) => api.get(`/songs/${id}`),
+  getPopularSongs: (limit = 20) => api.get('/songs/popular', { params: { limit } }),
+  getLatestSongs: (limit = 20) => api.get('/songs/latest', { params: { limit } }),
+  incrementPlayCount: (id) => api.patch(`/songs/${id}/play`),
+  toggleFavorite: (id) => api.patch(`/songs/${id}/favorite`),
+  uploadSong: (formData) => api.post('/songs', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }),
+};
+
+
+PLAYLIST SERVICE
+----------------
+export const playlistService = {
+  getAllPlaylists: () => api.get('/playlists'),
+  getPlaylistById: (id) => api.get(`/playlists/${id}`),
+  createPlaylist: (data) => api.post('/playlists', data),
+  updatePlaylist: (id, data) => api.put(`/playlists/${id}`, data),
+  deletePlaylist: (id) => api.delete(`/playlists/${id}`),
+  addSongToPlaylist: (playlistId, songId) => 
+    api.post(`/playlists/${playlistId}/songs`, { songId }),
+  removeSongFromPlaylist: (playlistId, songId) => 
+    api.delete(`/playlists/${playlistId}/songs/${songId}`),
+};
+
+
+SEARCH SERVICE
+--------------
+export const searchService = {
+  search: (query, type = 'all', limit = 20) => 
+    api.get('/search', { params: { q: query, type, limit } }),
+  getSuggestions: (query) => 
+    api.get('/search/suggestions', { params: { q: query } }),
+};
+
+
+================================================================================
+                        UTILITIES & HELPER FUNCTIONS
+================================================================================
+
+FORMAT TIME (utils/formatTime.js)
+---------------------------------
+export const formatTime = (seconds) => {
+  if (!seconds || isNaN(seconds)) return '0:00';
+  
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+};
+
+export const formatDuration = (seconds) => {
+  if (!seconds || isNaN(seconds)) return '0 min';
+  
+  const hours = Math.floor(seconds / 3600);
+  const mins = Math.floor((seconds % 3600) / 60);
+  
+  if (hours > 0) {
+    return `${hours} hr ${mins} min`;
+  }
+  return `${mins} min`;
+};
+
+
+FORMAT DATE (utils/formatDate.js)
+---------------------------------
+export const formatDate = (date) => {
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
+};
+
+export const getRelativeTime = (date) => {
+  const now = new Date();
+  const diff = now - new Date(date);
+  const seconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+  
+  if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
+  if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+  if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+  return 'Just now';
+};
+
+
+CONSTANTS (utils/constants.js)
+------------------------------
+export const GENRES = [
+  'Pop', 'Rock', 'Hip-Hop', 'Jazz', 'Classical',
+  'Electronic', 'R&B', 'Country', 'Indie', 'Metal',
+  'Blues', 'Reggae', 'Folk', 'Bollywood', 'Punjabi'
+];
+
+export const YEARS = Array.from(
+  { length: 50 }, 
+  (_, i) => new Date().getFullYear() - i
+);
+
+export const REPEAT_MODES = {
+  OFF: 'off',
+  ALL: 'all',
+  ONE: 'one'
+};
+
+export const AUDIO_QUALITY = {
+  LOW: '128kbps',
+  MEDIUM: '192kbps',
+  HIGH: '320kbps'
+};
+
+
+LOCAL STORAGE (utils/storage.js)
+---------------------------------
+export const storage = {
+  set: (key, value) => {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.error('Error saving to localStorage:', error);
+    }
+  },
+  
+  get: (key) => {
+    try {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : null;
+    } catch (error) {
+      console.error('Error reading from localStorage:', error);
+      return null;
+    }
+  },
+  
+  remove: (key) => {
+    try {
+      localStorage.removeItem(key);
+    } catch (error) {
+      console.error('Error removing from localStorage:', error);
+    }
+  },
+  
+  clear: () => {
+    try {
+      localStorage.clear();
+    } catch (error) {
+      console.error('Error clearing localStorage:', error);
+    }
+  }
+};
+
+
+================================================================================
+                        ENVIRONMENT VARIABLES
+================================================================================
+
+FRONTEND (.env)
+---------------
+VITE_API_URL=http://localhost:5000/api/v1
+VITE_APP_NAME=Melora
+VITE_APP_VERSION=1.0.0
+
+
+BACKEND (.env)
+--------------
+# Server Configuration
+PORT=5000
+NODE_ENV=development
+
+# Database
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/melora?retryWrites=true&w=majority
+
+# Cloudinary Configuration
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+
+# JWT (if implementing auth)
+JWT_SECRET=your_super_secret_jwt_key_here
+JWT_EXPIRE=15m
+JWT_REFRESH_EXPIRE=7d
+
+# CORS
+CORS_ORIGIN=http://localhost:5173
+
+# Rate Limiting
+RATE_LIMIT_WINDOW=15 # minutes
+RATE_LIMIT_MAX_REQUESTS=100
+
+
+================================================================================
+                        DEPLOYMENT CONFIGURATION
+================================================================================
+
+FRONTEND DEPLOYMENT (Vercel)
+-----------------------------
+1. Build Command: npm run build
+2. Output Directory: dist
+3. Environment Variables:
+   - VITE_API_URL=https://your-api.onrender.com/api/v1
+
+vercel.json:
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ]
+}
+
+
+BACKEND DEPLOYMENT (Render)
+----------------------------
+1. Build Command: npm install
+2. Start Command: npm start
+3. Environment Variables:
+   - All .env variables
+   - NODE_ENV=production
+
+render.yaml:
+services:
+  - type: web
+    name: melora-api
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+
+
+MONGODB ATLAS SETUP
+-------------------
+1. Create cluster (Free M0 tier)
+2. Whitelist IP: 0.0.0.0/0 (allow all)
+3. Create database user
+4. Get connection string
+5. Add to .env as MONGODB_URI
+
+
+CLOUDINARY SETUP
+----------------
+1. Sign up at cloudinary.com
+2. Get credentials from dashboard
+3. Configure upload presets
+4. Enable auto-format and auto-quality
+5. Set folder structure: /melora/songs, /melora/thumbnails
+
+
+================================================================================
+                        PERFORMANCE OPTIMIZATION
+================================================================================
+
+FRONTEND OPTIMIZATIONS
+----------------------
+1. Code Splitting
+   - React.lazy() for route-based splitting
+   - Dynamic imports for heavy components
+
+2. Image Optimization
+   - Use WebP format
+   - Lazy load images
+   - Responsive images with srcset
+   - Use Cloudinary transformations
+
+3. Audio Optimization
+   - Preload only current song
+   - Progressive loading
+   - Use streaming URLs
+
+4. Caching
+   - Cache API responses
+   - Use React Query / SWR
+   - Service Worker caching
+
+5. Bundle Optimization
+   - Tree shaking
+   - Minification
+   - Compression (gzip/brotli)
+   - Remove unused dependencies
+
+
+BACKEND OPTIMIZATIONS
+---------------------
+1. Database Indexing
+   - Index frequently queried fields
+   - Compound indexes for filters
+   - Text indexes for search
+
+2. Query Optimization
+   - Use pagination
+   - Limit returned fields
+   - Aggregate pipelines for complex queries
+
+3. Caching
+   - Redis for frequently accessed data
+   - Cache popular songs
+   - Cache search results
+
+4. Compression
+   - Enable gzip compression
+   - Compress API responses
+
+5. CDN
+   - Use Cloudinary CDN for media
+   - Cache static assets
+
+
+================================================================================
+                        TESTING STRATEGY
+================================================================================
+
+FRONTEND TESTING
+----------------
+1. Unit Tests (Vitest)
+   - Component logic
+   - Utility functions
+   - Custom hooks
+
+2. Integration Tests
+   - API calls
+   - State management
+   - User flows
+
+3. E2E Tests (Playwright/Cypress)
+   - Critical user journeys
+   - Player functionality
+   - Playlist creation
+
+
+BACKEND TESTING
+---------------
+1. Unit Tests (Jest)
+   - Controller functions
+   - Utility functions
+   - Validators
+
+2. Integration Tests
+   - API endpoints
+   - Database operations
+   - File uploads
+
+3. Load Testing
+   - API performance
+   - Concurrent users
+   - Database queries
+
+
+================================================================================
+                        FUTURE ENHANCEMENTS
+================================================================================
+
+PHASE 2 (Multi-User Support)
+----------------------------
+- User authentication & authorization
+- User profiles
+- Personal playlists per user
+- Social features (follow users, share playlists)
+- Activity feed
+
+PHASE 3 (Advanced Features)
+---------------------------
+- Lyrics display with sync
+- Audio visualizer
+- Equalizer with presets
+- Sleep timer
+- Crossfade between tracks
+- Gapless playback
+- Queue history
+- Smart recommendations (ML-based)
+- Radio mode (auto-play similar songs)
+
+PHASE 4 (Social & Sharing)
+--------------------------
+- Public/Private playlists
+- Collaborative playlists
+- Share songs on social media
+- Playlist discovery
+- User-generated content
+
+PHASE 5 (Monetization - If Scaling)
+-----------------------------------
+- Subscription tiers
+- Offline downloads
+- High-quality audio (FLAC)
+- Ad-free experience
+- Early access to new features
+
+
+================================================================================
+                        DEVELOPMENT WORKFLOW
+================================================================================
+
+BRANCH STRATEGY
+---------------
+- main: Production-ready code
+- develop: Development branch
+- feature/*: New features
+- bugfix/*: Bug fixes
+- hotfix/*: Urgent production fixes
+
+COMMIT CONVENTION
+-----------------
+- feat: New feature
+- fix: Bug fix
+- docs: Documentation
+- style: Code style changes
+- refactor: Code refactoring
+- test: Tests
+- chore: Build/config changes
+
+Example: "feat: add shuffle functionality to player"
+
+
+CODE REVIEW CHECKLIST
+---------------------
+✓ Code follows style guide
+✓ No console.logs in production
+✓ Proper error handling
+✓ Comments for complex logic
+✓ Mobile responsive
+✓ Accessibility (ARIA labels)
+✓ Performance optimized
+✓ No security vulnerabilities
+
+
+================================================================================
+                        SECURITY CONSIDERATIONS
+================================================================================
+
+FRONTEND SECURITY
+-----------------
+1. Input Validation
+   - Sanitize user inputs
+   - XSS prevention
+   - CSRF tokens (if auth)
+
+2. Secure Storage
+   - Don't store sensitive data in localStorage
+   - Use httpOnly cookies for tokens
+
+3. HTTPS Only
+   - Force HTTPS in production
+   - Secure cookies
+
+
+BACKEND SECURITY
+----------------
+1. Authentication
+   - Strong password hashing (bcrypt)
+   - JWT with short expiry
+   - Rate limiting on auth routes
+
+2. Input Validation
+   - Joi/express-validator
+   - Sanitize inputs
+   - SQL injection prevention (not applicable with MongoDB)
+
+3. Headers Security
+   - Helmet.js middleware
+   - CORS configuration
+   - Content Security Policy
+
+4. File Upload Security
+   - Validate file types
+   - Limit file size
+   - Virus scanning (future)
+   - Use cloud storage (not server disk)
+
+5. API Security
+   - Rate limiting
+   - API keys (if public)
+   - Request size limits
+   - Timeout protection
+
+
+================================================================================
+                        ACCESSIBILITY (A11Y)
+================================================================================
+
+WCAG COMPLIANCE
+---------------
+1. Keyboard Navigation
+   - Tab through all interactive elements
+   - Skip to content link
+   - Focus indicators visible
+
+2. Screen Reader Support
+   - ARIA labels on buttons
+   - Alt text on images
+   - Semantic HTML
+
+3. Color Contrast
+   - Minimum 4.5:1 for text
+   - Visual indicators beyond color
+
+4. Responsive Text
+   - Scalable font sizes
+   - No horizontal scroll at 200% zoom
+
+5. Focus Management
+   - Logical tab order
+   - Return focus after modals
+   - No keyboard traps
+
+
+================================================================================
+                        ANALYTICS & MONITORING
+================================================================================
+
+METRICS TO TRACK
+----------------
+1. User Metrics (when multi-user)
+   - Daily/Monthly active users
+   - Session duration
+   - Retention rate
+
+2. Performance Metrics
+   - Page load time
+   - API response time
+   - Audio buffering time
+   - Error rates
+
+3. Engagement Metrics
+   - Songs played per session
+   - Most played songs
+   - Popular playlists
+   - Search queries
+
+4. Technical Metrics
+   - Server uptime
+   - Database performance
+   - CDN bandwidth usage
+   - Error logs
+
+TOOLS
+-----
+- Google Analytics (frontend)
+- Sentry (error tracking)
+- Cloudinary Analytics (media delivery)
+- MongoDB Atlas Monitoring
+
+
+================================================================================
+                        COMMON ISSUES & SOLUTIONS
+================================================================================
+
+ISSUE 1: Audio not playing on mobile
+SOLUTION: 
+- Require user interaction before play
+- Use appropriate MIME types
+- Test audio codec compatibility
+
+ISSUE 2: Slow song loading
+SOLUTION:
+- Optimize audio file size
+- Use CDN for delivery
+- Implement progressive loading
+- Preload next song in queue
+
+ISSUE 3: High bandwidth usage
+SOLUTION:
+- Implement audio quality settings
+- Use adaptive bitrate streaming (future)
+- Cache frequently played songs
+
+ISSUE 4: App not installable as PWA
+SOLUTION:
+- Check manifest.json validity
+- Ensure HTTPS in production
+- Register service worker correctly
+- Meet PWA criteria
+
+ISSUE 5: Search is slow
+SOLUTION:
+- Implement debouncing
+- Use database text indexes
+- Cache popular searches
+- Limit results returned
+
+
+================================================================================
+                        ESTIMATED TIMELINE
+================================================================================
+
+WEEK 1-2: Project Setup & Core Backend
+---------------------------------------
+- Initialize React + Node projects
+- Setup database & cloud storage
+- Implement song model & upload
+- Basic CRUD APIs
+- Upload initial songs
+
+WEEK 3-4: Frontend UI Development
+----------------------------------
+- Design system setup
+- Core components (Header, Sidebar, Cards)
+- Home page
+- Browse page
+- Song listing
+
+WEEK 5-6: Audio Player Development
+-----------------------------------
+- Player component
+- Playback controls
+- Queue management
+- Shuffle & repeat
+- Volume control
+
+WEEK 7-8: Playlist & Search
+---------------------------
+- Playlist CRUD
+- Search implementation
+- Favorites system
+- Recently played
+
+WEEK 9-10: PWA & Optimization
+------------------------------
+- Convert to PWA
+- Service worker
+- Performance optimization
+- Mobile responsiveness
+- Bug fixes
+
+WEEK 11-12: Testing & Deployment
+---------------------------------
+- Testing (unit, integration, E2E)
+- Bug fixes
+- Deploy to production
+- Documentation
+- Launch 🚀
+
+
+================================================================================
+                        RESOURCES & DOCUMENTATION
+================================================================================
+
+OFFICIAL DOCS
+-------------
+- React: https://react.dev
+- Node.js: https://nodejs.org/docs
+- Express: https://expressjs.com
+- MongoDB: https://docs.mongodb.com
+- Tailwind CSS: https://tailwindcss.com/docs
+- Vite: https://vitejs.dev
+
+LIBRARIES
+---------
+- Howler.js: https://howlerjs.com
+- Zustand: https://github.com/pmndrs/zustand
+- Axios: https://axios-http.com
+- React Router: https://reactrouter.com
+- Cloudinary: https://cloudinary.com/documentation
+
+DESIGN INSPIRATION
+------------------
+- Spotify Web Player
+- Apple Music Web
+- YouTube Music
+- SoundCloud
+
+
+================================================================================
+                        CONTACT & SUPPORT
+================================================================================
+
+Project: Melora - Your Music, Your Vibe
+Developer: [Your Name]
+GitHub: [Your GitHub URL]
+Email: [Your Email]
+
+For issues, feature requests, or contributions:
+- Open GitHub issue
+- Submit pull request
+- Contact via email
+
+
+================================================================================
+                        END OF DOCUMENTATION
+================================================================================
+
+Last Updated: May 6, 2026
+Version: 1.0
+Status: Development Ready
+
+This document serves as the complete reference for building Melora.
+Follow the structure, implement features systematically, and create
+an amazing personal music streaming experience.
+
+Happy Coding! 🎵🚀
+
+================================================================================
+
+
+
+Authentication Details:
+1. Cloudinary: (utkarshraj98723@gmail.com)
+2. Supabase-pgSQL: (jaycob4498@gmail.com)
+3. Google Cloud Console: (jaycob4498@gmail.com)
+4. Google Email: (utkarshraj98723@gmail.com)

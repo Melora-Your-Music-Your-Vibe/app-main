@@ -1,0 +1,19 @@
+/* App Layout */
+.app-layout {
+  min-height: 100vh;
+  position: relative;
+}
+
+.main-content {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  transition: margin-left var(--transition-slow);
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0 !important;
+    padding-bottom: calc(var(--nav-mobile-height) + var(--player-height) + 1rem) !important;
+  }
+}

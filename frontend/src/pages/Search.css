@@ -1,0 +1,25 @@
+.search-page { padding: 1.5rem 0 2rem; }
+.search-bar-wrap { position: relative; display: flex; align-items: center; margin-bottom: 1.5rem; }
+.search-bar-icon { position: absolute; left: 1rem; color: var(--text-muted); }
+.search-input { width: 100%; padding: 1rem 3rem 1rem 3rem; background: var(--bg-card); border: 2px solid var(--border-color); border-radius: var(--radius-full); font-size: 1rem; color: var(--text-primary); transition: all var(--transition-normal); }
+.search-input::placeholder { color: var(--text-muted); }
+.search-input:focus { border-color: var(--brand-green); box-shadow: 0 0 0 3px rgba(29,185,84,0.15); }
+.search-clear { position: absolute; right: 1rem; color: var(--text-muted); padding: 0.25rem; }
+.search-clear:hover { color: var(--text-primary); }
+.search-suggestions { position: absolute; top: 100%; left: 0; right: 0; z-index: 50; margin-top: 0.5rem; padding: 0.5rem; max-height: 300px; overflow-y: auto; }
+.suggestion-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.75rem; width: 100%; border-radius: var(--radius-sm); transition: background var(--transition-fast); text-align: left; }
+.suggestion-item:hover { background: var(--bg-card-hover); }
+.suggestion-img { width: 40px; height: 40px; border-radius: var(--radius-sm); object-fit: cover; flex-shrink: 0; }
+.suggestion-title { font-size: 0.85rem; font-weight: 500; }
+.suggestion-artist { font-size: 0.75rem; color: var(--text-secondary); }
+.search-results, .search-browse { margin-top: 1rem; }
+.result-section { margin-bottom: 2rem; }
+.artist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; }
+.artist-card { padding: 1.25rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+.artist-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--bg-elevated); display: flex; align-items: center; justify-content: center; overflow: hidden; font-size: 1.5rem; font-weight: 700; color: var(--brand-green); }
+.artist-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.artist-name { font-weight: 600; font-size: 0.85rem; }
+.genre-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; margin-top: 1rem; }
+.genre-card { padding: 2rem 1rem; border-radius: var(--radius-lg); font-weight: 700; font-size: 1rem; color: #fff; transition: all var(--transition-normal); text-align: center; }
+.genre-card:hover { transform: scale(1.03); box-shadow: var(--shadow-lg); }
+.search-loading { padding: 2rem 0; }
