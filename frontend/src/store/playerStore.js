@@ -15,7 +15,6 @@ const usePlayerStore = create((set, get) => ({
   audioRef: null,
 
   setAudioRef: (ref) => set({ audioRef: ref }),
-  setIsPlaying: (isPlaying) => set({ isPlaying }),
 
   playSong: (song, queue = null) => {
     const state = get();

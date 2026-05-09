@@ -10,7 +10,7 @@ export default function AudioPlayer() {
     currentSong, isPlaying, currentTime, duration, volume, isMuted,
     shuffle, repeat, setAudioRef, setCurrentTime, setDuration,
     togglePlay, nextSong, prevSong, seekTo, setVolume, toggleMute,
-    toggleShuffle, toggleRepeat, setIsPlaying,
+    toggleShuffle, toggleRepeat,
   } = usePlayerStore();
 
   useEffect(() => {
@@ -86,15 +86,7 @@ export default function AudioPlayer() {
 
   return (
     <div className="audio-player" id="audio-player">
-      <audio 
-        ref={audioRef} 
-        onTimeUpdate={handleTimeUpdate} 
-        onLoadedMetadata={handleLoadedMetadata} 
-        onEnded={handleEnded} 
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
-        preload="auto" 
-      />
+      <audio ref={audioRef} onTimeUpdate={handleTimeUpdate} onLoadedMetadata={handleLoadedMetadata} onEnded={handleEnded} preload="auto" />
 
       <div className="player-track-info">
         <div className="player-thumbnail">
