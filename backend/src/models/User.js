@@ -45,6 +45,22 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  bio: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+  interests: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  socialLinks: {
+    type: DataTypes.JSON,
+    defaultValue: {},
+  },
+  vicksBalance: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+  },
   isVerified: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,

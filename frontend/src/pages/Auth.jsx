@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Music, Mail, Lock, User, Eye, EyeOff, ArrowRight, Globe, UserCheck, KeyRound } from 'lucide-react';
 import ThreeBackground from '../components/common/ThreeBackground';
@@ -12,6 +12,7 @@ export default function AuthPage() {
   const [mode, setMode] = useState('login'); // login | signup | otp | otp-verify | forgot
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [activeImage, setActiveImage] = useState(0);
   const [formData, setFormData] = useState({ name: '', email: '', password: '', confirmPassword: '', otp: '', role: 'user' });
   const [message, setMessage] = useState('');
   const [localError, setLocalError] = useState('');
@@ -20,6 +21,14 @@ export default function AuthPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setLocalError('');
   };
+
+  // Carousel timer
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveImage((prev) => (prev === 0 ? 1 : 0));
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -99,19 +108,34 @@ export default function AuthPage() {
     <div className="auth-page">
       <ThreeBackground variant="auth" />
 
-      <div className="auth-container animate-fadeIn">
-        <div className="auth-header">
-          <div className="auth-logo">
-            <Music size={36} className="auth-logo-icon" />
-            <h1 className="auth-logo-text">Melora</h1>
+      <div className="auth-split-layout glass-card animate-fadeIn">
+        <div className="auth-carousel hide-mobile">
+          <img src="/images/auth1.png" alt="Music Experience" className={`carousel-image ${activeImage === 0 ? 'active' : ''}`} />
+          <img src="/images/auth2.png" alt="Library Collection" className={`carousel-image ${activeImage === 1 ? 'active' : ''}`} />
+          
+          <div className="carousel-caption">
+            <h3>{activeImage === 0 ? '🎵 Step into the Vibe' : '✨ Your Ultimate Library'}</h3>
+            <p>{activeImage === 0 ? 'Discover new sounds, artists, and earn rewards as you listen.' : 'Organize, curate, and experience music in breathtaking quality.'}</p>
           </div>
-          <p className="auth-tagline">Your Music, Your Vibe</p>
+          
+          <div className="carousel-indicators">
+            <span className={activeImage === 0 ? 'active' : ''} onClick={() => setActiveImage(0)}></span>
+            <span className={activeImage === 1 ? 'active' : ''} onClick={() => setActiveImage(1)}></span>
+          </div>
         </div>
 
-        <div className="auth-card glass-card">
+        <div className="auth-container">
+          <div className="auth-header">
+            <div className="auth-logo">
+              <Music size={36} className="auth-logo-icon" />
+              <h1 className="auth-logo-text">Melora</h1>
+            </div>
+            <p className="auth-tagline">Your Music, Your Vibe ✨</p>
+          </div>
+
           <div className="auth-tabs">
-            <button className={`auth-tab ${mode === 'login' ? 'active' : ''}`} onClick={() => { setMode('login'); setLocalError(''); setMessage(''); }}>Login</button>
-            <button className={`auth-tab ${mode === 'signup' ? 'active' : ''}`} onClick={() => { setMode('signup'); setLocalError(''); setMessage(''); }}>Sign Up</button>
+            <button className={`auth-tab ${mode === 'login' ? 'active' : ''}`} onClick={() => { setMode('login'); setLocalError(''); setMessage(''); }}>🔑 Login</button>
+            <button className={`auth-tab ${mode === 'signup' ? 'active' : ''}`} onClick={() => { setMode('signup'); setLocalError(''); setMessage(''); }}>✨ Sign Up</button>
           </div>
 
           {displayError && <div className="auth-alert error">{displayError}</div>}
@@ -240,13 +264,13 @@ export default function AuthPage() {
                 </button>
               </div>
               <button className="btn btn-ghost guest-btn" onClick={handleGuestLogin} id="guest-login-btn">
-                <UserCheck size={18} /> Continue as Guest
+                <UserCheck size={18} /> Continue as Guest 🚀
               </button>
             </>
           )}
+          
+          <p className="auth-footer-text">© 2026 Melora. Your Music, Your Vibe.</p>
         </div>
-
-        <p className="auth-footer-text">© 2026 Melora. Your Music, Your Vibe.</p>
       </div>
     </div>
   );
