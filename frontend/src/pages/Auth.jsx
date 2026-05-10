@@ -50,8 +50,14 @@ export default function AuthPage() {
     }
     try {
       await register({ name: formData.name, email: formData.email, password: formData.password, role: formData.role });
-      setMode('otp-verify');
-      setMessage('Account created! Check your email for OTP verification.');
+      
+      if (formData.role === 'creator') {
+        setMode('login');
+        setMessage('Your Creator request has been forwarded for approval. An update will be provided in 24-48 hours.');
+      } else {
+        setMode('otp-verify');
+        setMessage('Account created! Check your email for OTP verification.');
+      }
     } catch (err) {
       setLocalError(err.response?.data?.message || 'Registration failed');
     }
@@ -109,13 +115,13 @@ export default function AuthPage() {
       <ThreeBackground variant="auth" />
 
       <div className="auth-split-layout glass-card animate-fadeIn">
-        <div className="auth-carousel hide-mobile">
+        <div className="auth-carousel">
           <img src="/images/auth1.png" alt="Music Experience" className={`carousel-image ${activeImage === 0 ? 'active' : ''}`} />
           <img src="/images/auth2.png" alt="Library Collection" className={`carousel-image ${activeImage === 1 ? 'active' : ''}`} />
           
           <div className="carousel-caption">
-            <h3>{activeImage === 0 ? '🎵 Step into the Vibe' : '✨ Your Ultimate Library'}</h3>
-            <p>{activeImage === 0 ? 'Discover new sounds, artists, and earn rewards as you listen.' : 'Organize, curate, and experience music in breathtaking quality.'}</p>
+            <h3>{activeImage === 0 ? 'Elevate Your Audio Experience' : 'Curate. Listen. Inspire.'}</h3>
+            <p>{activeImage === 0 ? 'Immerse yourself in high-fidelity streaming, discover groundbreaking artists, and unlock exclusive rewards as you explore.' : 'Build breathtaking libraries, organize your perfect vibe, and experience modern soundscapes on any device.'}</p>
           </div>
           
           <div className="carousel-indicators">
@@ -127,7 +133,7 @@ export default function AuthPage() {
         <div className="auth-container">
           <div className="auth-header">
             <div className="auth-logo">
-              <Music size={36} className="auth-logo-icon" />
+              <img src="/images/melora-logo.png" alt="Melora" className="auth-logo-icon" />
               <h1 className="auth-logo-text">Melora</h1>
             </div>
             <p className="auth-tagline">Your Music, Your Vibe ✨</p>
@@ -257,7 +263,13 @@ export default function AuthPage() {
               <div className="auth-divider"><span>or continue with</span></div>
               <div className="auth-social">
                 <button className="btn btn-secondary social-btn" onClick={handleGoogleLogin} id="google-login-btn">
-                  <Globe size={20} /> Google
+                  <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                  </svg>
+                  Google
                 </button>
                 <button className="btn btn-secondary social-btn" onClick={() => { setMode('otp'); setLocalError(''); setMessage(''); }} id="otp-login-btn">
                   <KeyRound size={20} /> OTP Login
