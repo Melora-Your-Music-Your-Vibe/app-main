@@ -96,6 +96,7 @@ const useAuthStore = create((set, get) => ({
       localStorage.removeItem('accessToken');
       localStorage.removeItem('user');
       set({ user: null, isAuthenticated: false });
+      throw new Error('Unauthorized');
     }
   },
 }));

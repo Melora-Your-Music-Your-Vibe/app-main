@@ -391,17 +391,30 @@ const getMe = async (req, res, next) => {
 // @route   PUT /api/v1/auth/update-profile
 const updateProfile = async (req, res, next) => {
   try {
-    const { name, phone } = req.body;
+    const { name, phone, bio, interests, socialLinks } = req.body;
     const user = req.user;
 
+    const hadCompleteProfileBefore = user.bio && user.socialLinks && Object.keys(user.socialLinks).length > 0;
+
     if (name) user.name = name;
-    if (phone) user.phone = phone;
+    if (phone !== undefined) user.phone = phone;
+    if (bio !== undefined) user.bio = bio;
+    if (interests !== undefined) user.interests = interests;
+    if (socialLinks !== undefined) user.socialLinks = typeof socialLinks === 'string' ? JSON.parse(socialLinks) : socialLinks;
+
+    const hasCompleteProfileNow = user.bio && user.socialLinks && Object.keys(user.socialLinks).length > 0;
+
+    let message = 'Profile updated';
+    if (!hadCompleteProfileBefore && hasCompleteProfileNow) {
+      user.vicksBalance += 100;
+      message = 'Profile updated! You earned 100 VICK\'S for completing your profile! 🎉';
+    }
 
     await user.save();
 
     res.json({
       success: true,
-      message: 'Profile updated',
+      message,
       data: { user: user.toJSON() },
     });
   } catch (error) {

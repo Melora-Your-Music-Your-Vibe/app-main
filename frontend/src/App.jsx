@@ -14,6 +14,7 @@ import SearchPage from './pages/Search';
 import LibraryPage from './pages/Library';
 import FavoritesPage from './pages/Favorites';
 import SettingsPage from './pages/Settings';
+import PlaylistDetail from './pages/PlaylistDetail';
 import CreatorDashboard from './pages/Creator';
 
 import './index.css';
@@ -72,7 +73,9 @@ export default function App() {
   const { checkAuth } = useAuthStore();
 
   useEffect(() => {
-    checkAuth();
+    if (!window.location.pathname.includes('/auth/callback')) {
+      checkAuth();
+    }
   }, []);
 
   return (
@@ -91,6 +94,7 @@ export default function App() {
               <Route path="/library" element={<LibraryPage />} />
               <Route path="/favorites" element={<FavoritesPage />} />
               <Route path="/playlists" element={<LibraryPage />} />
+              <Route path="/playlists/:id" element={<PlaylistDetail />} />
               <Route path="/settings" element={<SettingsPage />} />
 
               {/* Creator/Admin only */}
@@ -110,21 +114,17 @@ export default function App() {
 
 // Google OAuth callback handler
 function AuthCallback() {
-  const { setUser } = useAuthStore();
+  const { checkAuth } = useAuthStore();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get('token');
     if (token) {
       localStorage.setItem('accessToken', token);
-      // Fetch user data
-      import('./services/api').then(({ default: api }) => {
-        api.get('/auth/me').then(({ data }) => {
-          setUser(data.data.user);
-          window.location.href = '/';
-        }).catch(() => {
-          window.location.href = '/auth';
-        });
+      checkAuth().then(() => {
+        window.location.href = '/';
+      }).catch(() => {
+        window.location.href = '/auth';
       });
     } else {
       window.location.href = '/auth';
