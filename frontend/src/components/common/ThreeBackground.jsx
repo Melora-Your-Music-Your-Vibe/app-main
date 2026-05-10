@@ -75,6 +75,40 @@ function GlowOrb({ position, color, speed = 1 }) {
   );
 }
 
+function ArtisticWave() {
+  const mesh = useRef();
+  
+  useFrame((state) => {
+    if (mesh.current) {
+      const time = state.clock.elapsedTime;
+      const position = mesh.current.geometry.attributes.position;
+      
+      for (let i = 0; i < position.count; i++) {
+        const x = position.getX(i);
+        const y = position.getY(i);
+        const z = Math.sin(x * 0.5 + time) * 0.5 + Math.cos(y * 0.5 + time * 0.8) * 0.5;
+        position.setZ(i, z);
+      }
+      position.needsUpdate = true;
+      mesh.current.rotation.z = time * 0.05;
+    }
+  });
+
+  return (
+    <mesh ref={mesh} position={[0, 0, -4]} rotation={[-Math.PI / 3, 0, 0]}>
+      <planeGeometry args={[25, 25, 32, 32]} />
+      <meshStandardMaterial 
+        color="#1db954" 
+        wireframe 
+        transparent 
+        opacity={0.15} 
+        emissive="#1db954"
+        emissiveIntensity={0.5}
+      />
+    </mesh>
+  );
+}
+
 export default function ThreeBackground({ variant = 'default' }) {
   return (
     <div style={{
@@ -89,6 +123,7 @@ export default function ThreeBackground({ variant = 'default' }) {
         <GlowOrb position={[-2, -3, -1]} color="#9b5de5" speed={1} />
         {variant === 'auth' && (
           <>
+            <ArtisticWave />
             <GlowOrb position={[2, 3, -4]} color="#f15bb5" speed={0.7} />
             <GlowOrb position={[0, 0, -5]} color="#00f5d4" speed={0.5} />
           </>

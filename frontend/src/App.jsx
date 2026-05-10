@@ -16,6 +16,7 @@ import FavoritesPage from './pages/Favorites';
 import SettingsPage from './pages/Settings';
 import PlaylistDetail from './pages/PlaylistDetail';
 import CreatorDashboard from './pages/Creator';
+import AdminDashboard from './pages/AdminDashboard';
 
 import './index.css';
 import './App.css';
@@ -85,6 +86,7 @@ export default function App() {
           {/* Auth Page (public) */}
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
+          <Route path="/admin-portal" element={<AdminDashboard />} />
 
           {/* Protected App Routes */}
           <Route element={<ProtectedRoute />}>

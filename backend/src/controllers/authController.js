@@ -30,14 +30,16 @@ const register = async (req, res, next) => {
     const otp = generateOTP();
     const otpExpiresAt = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000);
 
+    const isCreator = role === 'creator';
     const user = await User.create({
       name,
       email,
       password,
-      role: role === 'creator' ? 'creator' : 'user',
+      role: isCreator ? 'creator' : 'user',
       authMethod: 'local',
       otp,
       otpExpiresAt,
+      isApproved: !isCreator, // Creators need admin approval
     });
 
     // Send OTP email
@@ -89,6 +91,10 @@ const login = async (req, res, next) => {
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return res.status(401).json({ success: false, message: 'Invalid email or password' });
+    }
+
+    if (!user.isApproved) {
+      return res.status(403).json({ success: false, message: 'Admin approval pending. Update will be provided in 24-48 hours.' });
     }
 
     const accessToken = generateAccessToken(user);

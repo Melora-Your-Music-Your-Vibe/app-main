@@ -18,6 +18,7 @@ const searchRoutes = require('./src/routes/searchRoutes');
 const favoriteRoutes = require('./src/routes/favoriteRoutes');
 const recentlyPlayedRoutes = require('./src/routes/recentlyPlayedRoutes');
 const statsRoutes = require('./src/routes/statsRoutes');
+const adminRoutes = require('./src/routes/adminRoutes');
 
 const app = express();
 
@@ -62,6 +63,7 @@ app.use('/api/v1/search', searchRoutes);
 app.use('/api/v1/favorites', favoriteRoutes);
 app.use('/api/v1/recently-played', recentlyPlayedRoutes);
 app.use('/api/v1/stats', statsRoutes);
+app.use('/api/v1/admin', adminRoutes);
 
 // 404
 app.use((req, res) => {
