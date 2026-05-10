@@ -1,9 +1,9 @@
 const { User } = require('../models');
 const jwt = require('jsonwebtoken');
 
-// Hardcoded admin credentials as requested
-const ADMIN_USERNAME = 'utkarshRaj';
-const ADMIN_PASSWORD = 'Utk@9399';
+// Fetch admin credentials from environment variables
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 // @desc    Admin login
 // @route   POST /api/v1/admin/login

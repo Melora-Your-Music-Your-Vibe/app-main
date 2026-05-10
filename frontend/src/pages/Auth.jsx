@@ -25,7 +25,7 @@ export default function AuthPage() {
   // Carousel timer
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveImage((prev) => (prev === 0 ? 1 : 0));
+      setActiveImage((prev) => (prev === 4 ? 0 : prev + 1));
     }, 5000);
     return () => clearInterval(interval);
   }, []);
@@ -118,22 +118,40 @@ export default function AuthPage() {
         <div className="auth-carousel">
           <img src="/images/auth1.png" alt="Music Experience" className={`carousel-image ${activeImage === 0 ? 'active' : ''}`} />
           <img src="/images/auth2.png" alt="Library Collection" className={`carousel-image ${activeImage === 1 ? 'active' : ''}`} />
+          <img src="/images/auth3.png" alt="Live Concert" className={`carousel-image ${activeImage === 2 ? 'active' : ''}`} />
+          <img src="/images/auth4.png" alt="Studio Production" className={`carousel-image ${activeImage === 3 ? 'active' : ''}`} />
+          <img src="/images/auth5.png" alt="Futuristic UI" className={`carousel-image ${activeImage === 4 ? 'active' : ''}`} />
           
           <div className="carousel-caption">
-            <h3>{activeImage === 0 ? 'Elevate Your Audio Experience' : 'Curate. Listen. Inspire.'}</h3>
-            <p>{activeImage === 0 ? 'Immerse yourself in high-fidelity streaming, discover groundbreaking artists, and unlock exclusive rewards as you explore.' : 'Build breathtaking libraries, organize your perfect vibe, and experience modern soundscapes on any device.'}</p>
+            <h3>
+              {activeImage === 0 && 'Elevate Your Audio Experience'}
+              {activeImage === 1 && 'Curate. Listen. Inspire.'}
+              {activeImage === 2 && 'Feel the Live Energy'}
+              {activeImage === 3 && 'Pro Audio Fidelity'}
+              {activeImage === 4 && 'Next-Gen Soundscape'}
+            </h3>
+            <p>
+              {activeImage === 0 && 'Immerse yourself in high-fidelity streaming, discover groundbreaking artists, and unlock exclusive rewards as you explore.'}
+              {activeImage === 1 && 'Build breathtaking libraries, organize your perfect vibe, and experience modern soundscapes on any device.'}
+              {activeImage === 2 && 'Step into the crowd and feel the raw energy of live performances right from your headphones.'}
+              {activeImage === 3 && 'Experience studio-quality sound mastering and unparalleled depth in every single track.'}
+              {activeImage === 4 && 'Interact with a futuristic interface designed for the ultimate modern music journey.'}
+            </p>
           </div>
           
           <div className="carousel-indicators">
             <span className={activeImage === 0 ? 'active' : ''} onClick={() => setActiveImage(0)}></span>
             <span className={activeImage === 1 ? 'active' : ''} onClick={() => setActiveImage(1)}></span>
+            <span className={activeImage === 2 ? 'active' : ''} onClick={() => setActiveImage(2)}></span>
+            <span className={activeImage === 3 ? 'active' : ''} onClick={() => setActiveImage(3)}></span>
+            <span className={activeImage === 4 ? 'active' : ''} onClick={() => setActiveImage(4)}></span>
           </div>
         </div>
 
         <div className="auth-container">
           <div className="auth-header">
             <div className="auth-logo">
-              <img src="/images/melora-logo.png" alt="Melora" className="auth-logo-icon" />
+              <img src="/images/melora-logo-u.png" alt="Melora" className="auth-logo-icon" />
               <h1 className="auth-logo-text">Melora</h1>
             </div>
             <p className="auth-tagline">Your Music, Your Vibe ✨</p>
@@ -147,8 +165,9 @@ export default function AuthPage() {
           {displayError && <div className="auth-alert error">{displayError}</div>}
           {message && <div className="auth-alert success">{message}</div>}
 
-          {/* LOGIN */}
-          {mode === 'login' && (
+          <div key={mode} className="auth-form-flip">
+            {/* LOGIN */}
+            {mode === 'login' && (
             <form onSubmit={handleLogin} className="auth-form">
               <div className="input-group">
                 <Mail size={18} className="input-icon" />
@@ -280,6 +299,7 @@ export default function AuthPage() {
               </button>
             </>
           )}
+          </div>
           
           <p className="auth-footer-text">© 2026 Melora. Your Music, Your Vibe.</p>
         </div>
