@@ -1,6 +1,14 @@
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 const { adminLogin, getCreators, approveCreator, updateCreator } = require('../controllers/adminController');
+const {
+  getAllAdvertisements,
+  createAdvertisement,
+  updateAdvertisement,
+  deleteAdvertisement,
+  toggleAdvertisement,
+} = require('../controllers/advertisementController');
+const upload = require('../middlewares/upload');
 
 // Superadmin middleware
 const requireSuperadmin = (req, res, next) => {
@@ -20,5 +28,12 @@ router.post('/login', adminLogin);
 router.get('/creators', requireSuperadmin, getCreators);
 router.put('/creators/:id/approve', requireSuperadmin, approveCreator);
 router.put('/creators/:id', requireSuperadmin, updateCreator);
+
+// Advertisement management routes (admin only)
+router.get('/advertisements', requireSuperadmin, getAllAdvertisements);
+router.post('/advertisements', requireSuperadmin, upload.single('adImage'), createAdvertisement);
+router.put('/advertisements/:id', requireSuperadmin, upload.single('adImage'), updateAdvertisement);
+router.delete('/advertisements/:id', requireSuperadmin, deleteAdvertisement);
+router.patch('/advertisements/:id/toggle', requireSuperadmin, toggleAdvertisement);
 
 module.exports = router;

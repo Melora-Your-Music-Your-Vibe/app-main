@@ -6,6 +6,7 @@ const Playlist = require('./Playlist');
 const PlaylistSong = require('./PlaylistSong');
 const Favorite = require('./Favorite');
 const RecentlyPlayed = require('./RecentlyPlayed');
+const Advertisement = require('./Advertisement');
 
 // Artist <-> Song
 Artist.hasMany(Song, { foreignKey: 'artistId', as: 'songs' });
@@ -52,4 +53,5 @@ module.exports = {
   PlaylistSong,
   Favorite,
   RecentlyPlayed,
+  Advertisement,
 };
