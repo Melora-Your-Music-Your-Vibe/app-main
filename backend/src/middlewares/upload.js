@@ -22,7 +22,7 @@ const fileFilter = (req, file, cb) => {
     } else {
       cb(new Error(`Unsupported audio format: ${file.mimetype}`), false);
     }
-  } else if (file.fieldname === 'thumbnail' || file.fieldname === 'coverImage' || file.fieldname === 'profileImage') {
+  } else if (file.fieldname === 'thumbnail' || file.fieldname === 'coverImage' || file.fieldname === 'profileImage' || file.fieldname === 'adImage') {
     if (allowedImageTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {

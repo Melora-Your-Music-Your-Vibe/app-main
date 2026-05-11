@@ -9,6 +9,7 @@ import usePlayerStore from './store/playerStore';
 
 // Pages
 import AuthPage from './pages/Auth';
+import LandingPage from './pages/LandingPage';
 import HomePage from './pages/Home';
 import SearchPage from './pages/Search';
 import LibraryPage from './pages/Library';
@@ -21,17 +22,17 @@ import AdminDashboard from './pages/AdminDashboard';
 import './index.css';
 import './App.css';
 
-// Protected Route wrapper
+// Protected Route wrapper — redirects to landing page if not authenticated
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuthStore();
-  if (!isAuthenticated) return <Navigate to="/auth" replace />;
+  if (!isAuthenticated) return <Navigate to="/landing" replace />;
   return children || <Outlet />;
 }
 
 // Creator Route (creator/admin only)
 function CreatorRoute({ children }) {
   const { user, isAuthenticated } = useAuthStore();
-  if (!isAuthenticated) return <Navigate to="/auth" replace />;
+  if (!isAuthenticated) return <Navigate to="/landing" replace />;
   if (user?.role !== 'creator' && user?.role !== 'admin') return <Navigate to="/" replace />;
   return children || <Outlet />;
 }
@@ -70,6 +71,12 @@ function LoadingFallback() {
   );
 }
 
+// Smart root redirect — if authenticated go to home, otherwise go to landing
+function RootRedirect() {
+  const { isAuthenticated } = useAuthStore();
+  return isAuthenticated ? <Navigate to="/home" replace /> : <Navigate to="/landing" replace />;
+}
+
 export default function App() {
   const { checkAuth } = useAuthStore();
 
@@ -83,7 +90,8 @@ export default function App() {
     <BrowserRouter>
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
-          {/* Auth Page (public) */}
+          {/* Public Routes */}
+          <Route path="/landing" element={<LandingPage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/admin-portal" element={<AdminDashboard />} />
@@ -91,7 +99,7 @@ export default function App() {
           {/* Protected App Routes */}
           <Route element={<ProtectedRoute />}>
             <Route element={<MainLayout />}>
-              <Route path="/" element={<HomePage />} />
+              <Route path="/home" element={<HomePage />} />
               <Route path="/search" element={<SearchPage />} />
               <Route path="/library" element={<LibraryPage />} />
               <Route path="/favorites" element={<FavoritesPage />} />
@@ -106,8 +114,11 @@ export default function App() {
             </Route>
           </Route>
 
+          {/* Root — smart redirect */}
+          <Route path="/" element={<RootRedirect />} />
+
           {/* Catch all */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<RootRedirect />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
@@ -124,7 +135,7 @@ function AuthCallback() {
     if (token) {
       localStorage.setItem('accessToken', token);
       checkAuth().then(() => {
-        window.location.href = '/';
+        window.location.href = '/home';
       }).catch(() => {
         window.location.href = '/auth';
       });

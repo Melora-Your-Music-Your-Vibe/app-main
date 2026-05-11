@@ -22,7 +22,7 @@ export default function Sidebar() {
 
       <nav className="sidebar-nav">
         <div className="nav-section">
-          <NavLink to="/" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} end>
+          <NavLink to="/home" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} end>
             <Home size={20} /> <span>Home</span>
           </NavLink>
           <NavLink to="/search" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
