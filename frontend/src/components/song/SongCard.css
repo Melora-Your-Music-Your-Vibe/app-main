@@ -8,6 +8,7 @@
   border: 1px solid transparent;
   transition: all var(--transition-normal);
   cursor: pointer;
+  position: relative;
 }
 
 .song-card:hover {
@@ -16,7 +17,15 @@
   transform: translateY(-2px);
 }
 
-.song-card.playing { border-color: rgba(29, 185, 84, 0.3); }
+.song-card.playing { border-color: rgba(30, 215, 96, 0.3); }
+
+/* Bottom row: song info + like button side by side */
+.song-card-bottom {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 0;
+}
 
 .song-card-img {
   position: relative;
@@ -70,7 +79,11 @@
   left: 8px;
 }
 
-.song-card-info { padding: 0 0.25rem; }
+.song-card-info {
+  padding: 0 0.25rem;
+  flex: 1;
+  min-width: 0;
+}
 
 .song-card-title {
   font-size: 0.85rem;
@@ -82,4 +95,38 @@
   font-size: 0.75rem;
   color: var(--text-secondary);
   margin-top: 2px;
+}
+
+/* ── Like button ─────────────────────────────────── */
+.song-like-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: var(--text-muted);
+  opacity: 0;
+  transition: opacity 150ms ease, color 150ms ease, transform 150ms ease;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.song-card:hover .song-like-btn,
+.song-like-btn.liked {
+  opacity: 1;
+}
+
+.song-like-btn:hover {
+  color: var(--brand-primary);
+  transform: scale(1.2);
+}
+
+.song-like-btn.liked {
+  color: var(--brand-primary);
+}
+
+.song-like-btn.liked:hover {
+  transform: scale(1.2);
+  color: #ff4d6d;
 }

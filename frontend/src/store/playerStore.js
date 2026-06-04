@@ -25,36 +25,33 @@ const usePlayerStore = create((set, get) => ({
   },
 
   togglePlay: () => {
-    const { isPlaying, audioRef } = get();
-    if (audioRef) {
-      if (isPlaying) audioRef.pause();
-      else audioRef.play().catch(() => {});
-    }
-    set({ isPlaying: !isPlaying });
+    set((state) => ({ isPlaying: !state.isPlaying }));
   },
 
-  pause: () => { get().audioRef?.pause(); set({ isPlaying: false }); },
-  play: () => { get().audioRef?.play().catch(() => {}); set({ isPlaying: true }); },
+  pause: () => { set({ isPlaying: false }); },
+  play: () => { set({ isPlaying: true }); },
 
   nextSong: () => {
-    const { queue, currentIndex, shuffle, repeat } = get();
+    const { queue, currentIndex, shuffle } = get();
     if (queue.length === 0) return;
     let nextIdx;
     if (shuffle) {
-      nextIdx = Math.floor(Math.random() * queue.length);
-    } else if (currentIndex < queue.length - 1) {
-      nextIdx = currentIndex + 1;
-    } else if (repeat === 'all') {
-      nextIdx = 0;
+      // Pick random index different from current (if queue > 1)
+      if (queue.length === 1) {
+        nextIdx = 0;
+      } else {
+        do { nextIdx = Math.floor(Math.random() * queue.length); } while (nextIdx === currentIndex);
+      }
     } else {
-      set({ isPlaying: false });
-      return;
+      // Always circular — wrap at end
+      nextIdx = (currentIndex + 1) % queue.length;
     }
     set({ currentSong: queue[nextIdx], currentIndex: nextIdx, isPlaying: true });
   },
 
   prevSong: () => {
     const { queue, currentIndex, currentTime } = get();
+    // If more than 3 seconds played, restart current song
     if (currentTime > 3) {
       const { audioRef } = get();
       if (audioRef) audioRef.currentTime = 0;
@@ -62,6 +59,7 @@ const usePlayerStore = create((set, get) => ({
       return;
     }
     if (queue.length === 0) return;
+    // Always circular — wrap at start
     const prevIdx = currentIndex > 0 ? currentIndex - 1 : queue.length - 1;
     set({ currentSong: queue[prevIdx], currentIndex: prevIdx, isPlaying: true });
   },
