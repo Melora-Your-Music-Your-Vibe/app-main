@@ -8,7 +8,11 @@
     "dev": "node --watch server.js",
     "db:sync": "node src/config/syncDb.js"
   },
-  "keywords": ["music", "streaming", "api"],
+  "keywords": [
+    "music",
+    "streaming",
+    "api"
+  ],
   "author": "Utkarsh Raj",
   "license": "ISC",
   "type": "commonjs",
@@ -30,6 +34,7 @@
     "passport-google-oauth20": "^2.0.0",
     "pg": "^8.16.0",
     "pg-hstore": "^2.3.4",
+    "resend": "^6.12.4",
     "sequelize": "^6.37.5",
     "uuid": "^11.1.0"
   }

@@ -1,23 +1,17 @@
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: parseInt(process.env.SMTP_PORT) || 465,
-  secure: true, // port 465 = SSL (works on Render); port 587 = STARTTLS (blocked by Render)
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-  connectionTimeout: 10000, // 10s — fail fast instead of hanging
-  socketTimeout: 10000,
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Sender address — must be from a domain verified in Resend dashboard.
+// Use the default Resend sandbox address if you haven't verified a domain yet.
+const FROM_ADDRESS = process.env.RESEND_FROM || 'Melora 🎵 <onboarding@resend.dev>';
 
 /**
- * Send OTP email for verification
+ * Send OTP email for verification / login
  */
 const sendOTPEmail = async (email, otp, name = 'User') => {
-  const mailOptions = {
-    from: `"Melora 🎵" <${process.env.SMTP_USER}>`,
+  const { error } = await resend.emails.send({
+    from: FROM_ADDRESS,
     to: email,
     subject: 'Your Melora Verification Code',
     html: `
@@ -39,17 +33,20 @@ const sendOTPEmail = async (email, otp, name = 'User') => {
         </div>
       </div>
     `,
-  };
+  });
 
-  await transporter.sendMail(mailOptions); // throws on failure — let caller handle it
+  if (error) {
+    console.error('Resend email error:', error);
+    throw new Error(error.message || 'Failed to send email');
+  }
 };
 
 /**
  * Send password reset email
  */
 const sendPasswordResetEmail = async (email, resetUrl, name = 'User') => {
-  const mailOptions = {
-    from: `"Melora 🎵" <${process.env.SMTP_USER}>`,
+  const { error } = await resend.emails.send({
+    from: FROM_ADDRESS,
     to: email,
     subject: 'Reset Your Melora Password',
     html: `
@@ -67,9 +64,12 @@ const sendPasswordResetEmail = async (email, resetUrl, name = 'User') => {
         </div>
       </div>
     `,
-  };
+  });
 
-  await transporter.sendMail(mailOptions); // throws on failure — let caller handle it
+  if (error) {
+    console.error('Resend email error:', error);
+    throw new Error(error.message || 'Failed to send email');
+  }
 };
 
 module.exports = { sendOTPEmail, sendPasswordResetEmail };

@@ -23,6 +23,9 @@ const advertisementRoutes = require('./src/routes/advertisementRoutes');
 
 const app = express();
 
+// Trust Render's load balancer proxy (fixes express-rate-limit ERR_ERL_UNEXPECTED_X_FORWARDED_FOR)
+app.set('trust proxy', 1);
+
 // Security
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 
