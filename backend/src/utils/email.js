@@ -2,12 +2,14 @@ const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: process.env.SMTP_PORT || 587,
-  secure: false,
+  port: parseInt(process.env.SMTP_PORT) || 465,
+  secure: true, // port 465 = SSL (works on Render); port 587 = STARTTLS (blocked by Render)
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
+  connectionTimeout: 10000, // 10s — fail fast instead of hanging
+  socketTimeout: 10000,
 });
 
 /**
@@ -39,13 +41,7 @@ const sendOTPEmail = async (email, otp, name = 'User') => {
     `,
   };
 
-  try {
-    await transporter.sendMail(mailOptions);
-    return true;
-  } catch (error) {
-    console.error('Email send error:', error.message);
-    return false;
-  }
+  await transporter.sendMail(mailOptions); // throws on failure — let caller handle it
 };
 
 /**
@@ -73,13 +69,7 @@ const sendPasswordResetEmail = async (email, resetUrl, name = 'User') => {
     `,
   };
 
-  try {
-    await transporter.sendMail(mailOptions);
-    return true;
-  } catch (error) {
-    console.error('Email send error:', error.message);
-    return false;
-  }
+  await transporter.sendMail(mailOptions); // throws on failure — let caller handle it
 };
 
 module.exports = { sendOTPEmail, sendPasswordResetEmail };

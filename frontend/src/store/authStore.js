@@ -55,8 +55,15 @@ const useAuthStore = create((set, get) => ({
   },
 
   sendOTP: async (email) => {
-    const res = await api.post('/auth/otp-login', { email });
-    return res.data;
+    set({ loading: true, error: null });
+    try {
+      const res = await api.post('/auth/otp-login', { email });
+      set({ loading: false });
+      return res.data;
+    } catch (err) {
+      set({ loading: false, error: err.response?.data?.message || 'Failed to send OTP' });
+      throw err;
+    }
   },
 
   verifyOTP: async (email, otp) => {

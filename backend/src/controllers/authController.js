@@ -182,6 +182,9 @@ const sendOTP = async (req, res, next) => {
       message: 'OTP sent to your email',
     });
   } catch (error) {
+    if (error.message?.includes('SMTP') || error.message?.includes('connect') || error.code === 'ECONNREFUSED') {
+      return res.status(500).json({ success: false, message: 'Failed to send OTP email. Please try again later.' });
+    }
     next(error);
   }
 };
@@ -269,6 +272,9 @@ const otpLogin = async (req, res, next) => {
       message: 'OTP sent to your email. Check your inbox.',
     });
   } catch (error) {
+    if (error.message?.includes('SMTP') || error.message?.includes('connect') || error.code === 'ECONNREFUSED' || error.code === 'ETIMEDOUT') {
+      return res.status(500).json({ success: false, message: 'Failed to send OTP email. Please try again later.' });
+    }
     next(error);
   }
 };
